@@ -11,6 +11,7 @@ import { useTranslation } from "next-i18next"
 
 export default function ChangeThemeMenu() {
   const { t } = useTranslation("common")
+
   const { colorMode, setColorMode } = useColorMode()
 
   return (

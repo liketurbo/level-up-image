@@ -1,23 +1,21 @@
 import { AttachmentIcon } from "@chakra-ui/icons"
-import { Button } from "@chakra-ui/react"
+import { Button, Container } from "@chakra-ui/react"
 import { GetStaticPropsContext } from "next"
 import { useTranslation } from "next-i18next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
-import ChangeLanguageMenu from "../components/ChangeLanguageMenu"
-import ChangeThemeMenu from "../components/ChangeThemeMenu"
+import Header from "../components/Header"
 
 export default function IndexPage() {
   const { t } = useTranslation("common")
 
   return (
-    <>
-      <ChangeLanguageMenu />
-      <ChangeThemeMenu />
+    <Container maxW="container.md">
+      <Header />
       <Button leftIcon={<AttachmentIcon />} colorScheme="blue" variant="solid">
         {t("upload-image")}
       </Button>
-    </>
+    </Container>
   )
 }
 
