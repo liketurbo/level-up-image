@@ -5,6 +5,7 @@ import { useTranslation } from "next-i18next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 import ChangeLanguageMenu from "../components/ChangeLanguageMenu"
+import ChangeThemeMenu from "../components/ChangeThemeMenu"
 
 export default function IndexPage() {
   const { t } = useTranslation("common")
@@ -12,6 +13,7 @@ export default function IndexPage() {
   return (
     <>
       <ChangeLanguageMenu />
+      <ChangeThemeMenu />
       <Button leftIcon={<AttachmentIcon />} colorScheme="blue" variant="solid">
         {t("upload-image")}
       </Button>

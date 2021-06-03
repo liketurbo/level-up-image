@@ -1,5 +1,8 @@
 {
   "upload-image": "Upload image",
   "language": "Language",
-  "current-language": "English"
+  "current-language": "English",
+  "theme": "Theme",
+  "dark-theme": "Dark",
+  "light-theme": "Light"
 }

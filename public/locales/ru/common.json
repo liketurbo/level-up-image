@@ -1,5 +1,8 @@
 {
   "upload-image": "Загрузить изображение",
   "language": "Язык",
-  "current-language": "Русский"
+  "current-language": "Русский",
+  "theme": "Тема",
+  "dark-theme": "Темная",
+  "light-theme": "Светлая"
 }

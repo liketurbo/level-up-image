@@ -13,10 +13,10 @@ export default function ChangeLanguageMenu() {
       </MenuButton>
       <MenuList>
         <Link href="/" locale="en" passHref>
-          <MenuItem value="en">English</MenuItem>
+          <MenuItem>English</MenuItem>
         </Link>
         <Link href="/" locale="ru" passHref>
-          <MenuItem value="ru">Русский</MenuItem>
+          <MenuItem>Русский</MenuItem>
         </Link>
       </MenuList>
     </Menu>
