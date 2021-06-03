@@ -26,5 +26,22 @@ module.exports = {
     ], // should add ".ts" if typescript project
     "react/forbid-prop-types": ["error", { forbid: ["any"] }],
     "react/jsx-props-no-spreading": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        js: "never",
+        jsx: "never",
+        ts: "never",
+        tsx: "never",
+      },
+    ],
+  },
+  settings: {
+    "import/resolver": {
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+      },
+    },
   },
 }

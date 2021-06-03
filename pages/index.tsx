@@ -1,21 +1,17 @@
 import { AttachmentIcon } from "@chakra-ui/icons"
-import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react"
+import { Button } from "@chakra-ui/react"
 import { GetStaticPropsContext } from "next"
 import { useTranslation } from "next-i18next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+
+import ChangeLanguageMenu from "../components/ChangeLanguageMenu"
 
 export default function IndexPage() {
   const { t } = useTranslation("common")
 
   return (
     <>
-      <Menu>
-        <MenuButton variant="outline">Изменить язык</MenuButton>
-        <MenuList>
-          <MenuItem>English</MenuItem>
-          <MenuItem>Русский</MenuItem>
-        </MenuList>
-      </Menu>
+      <ChangeLanguageMenu />
       <Button leftIcon={<AttachmentIcon />} colorScheme="blue" variant="solid">
         {t("upload-image")}
       </Button>
