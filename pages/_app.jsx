@@ -1,4 +1,5 @@
 import { ChakraProvider } from "@chakra-ui/react"
+import PropTypes from "prop-types"
 
 export default function MyApp({ Component, pageProps }) {
   return (
@@ -6,4 +7,9 @@ export default function MyApp({ Component, pageProps }) {
       <Component {...pageProps} />
     </ChakraProvider>
   )
+}
+
+MyApp.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+  pageProps: PropTypes.object.isRequired,
 }
