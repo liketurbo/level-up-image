@@ -1,4 +1,5 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react"
+import { appWithTranslation } from "next-i18next"
 import PropTypes from "prop-types"
 
 const colors = {
@@ -11,13 +12,15 @@ const colors = {
 
 const theme = extendTheme({ colors })
 
-export default function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
       <Component {...pageProps} />
     </ChakraProvider>
   )
 }
+
+export default appWithTranslation(MyApp)
 
 MyApp.propTypes = {
   Component: PropTypes.elementType.isRequired,
