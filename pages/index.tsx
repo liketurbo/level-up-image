@@ -12,6 +12,7 @@ import { useTranslation } from "next-i18next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import { useState } from "react"
 
+// import io from "socket.io-client"
 import Footer from "../components/Footer"
 import Header from "../components/Header"
 
@@ -28,68 +29,73 @@ export default function IndexPage() {
       flexDirection="column"
     >
       <Header />
-      <Flex justifyContent="center">
-        {!image && (
-          <Button
-            leftIcon={<AttachmentIcon />}
-            colorScheme="blue"
-            variant="solid"
-            as="label"
-            cursor="pointer"
-          >
-            {t("upload-image")}
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={(e) => {
-                if (!e.target.files) return
+      <Flex
+        justifyContent="center"
+        as="form"
+        onSubmit={(e) => {
+          e.preventDefault()
 
-                const src = URL.createObjectURL(e.target.files[0])
+          const formData = new FormData(e.target as HTMLFormElement)
 
-                setImage(src)
-              }}
-            />
-          </Button>
+          fetch("/api").then(() => {
+            const socket = new WebSocket("ws://localhost:1234/api")
+
+            const file = formData.get("file") as File
+
+            socket.addEventListener("open", async () => {
+              socket.send(
+                JSON.stringify({
+                  contentType: file.type,
+                  name: file.name,
+                })
+              )
+
+              socket.send(file)
+            })
+          })
+        }}
+      >
+        <Button
+          leftIcon={<AttachmentIcon />}
+          colorScheme="blue"
+          variant="solid"
+          as="label"
+          cursor="pointer"
+          display={image ? "none" : "flex"}
+        >
+          {t("upload-image")}
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            name="file"
+            onChange={(e) => {
+              if (!e.target.files) return
+
+              const src = URL.createObjectURL(e.target.files[0])
+
+              setImage(src)
+            }}
+          />
+        </Button>
+        {image && (
+          <IconButton
+            aria-label="Delete image"
+            icon={<DeleteIcon />}
+            colorScheme="red"
+            variant="outline"
+            mx={2}
+            onClick={() => {
+              URL.revokeObjectURL(image)
+
+              setImage(null)
+            }}
+          />
         )}
         {image && (
-          <>
-            <Button
-              leftIcon={<AttachmentIcon />}
-              colorScheme="blue"
-              variant="solid"
-              as="label"
-              cursor="pointer"
-            >
-              {t("change-image")}
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={(e) => {
-                  if (!e.target.files) return
-
-                  URL.revokeObjectURL(image)
-
-                  const src = URL.createObjectURL(e.target.files[0])
-
-                  setImage(src)
-                }}
-              />
-            </Button>
-            <IconButton
-              aria-label="Delete image"
-              icon={<DeleteIcon />}
-              color="red"
-              variant="outline"
-              ml={2}
-              onClick={() => {
-                URL.revokeObjectURL(image)
-
-                setImage(null)
-              }}
-            />
-          </>
+          <Button colorScheme="green" type="submit">
+            {t("enhance-image")}
+          </Button>
         )}
       </Flex>
       {image && (
