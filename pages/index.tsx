@@ -1,20 +1,83 @@
-import { AttachmentIcon } from "@chakra-ui/icons"
-import { Button, Container } from "@chakra-ui/react"
+import { AttachmentIcon, DeleteIcon } from "@chakra-ui/icons"
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  IconButton,
+  Image,
+} from "@chakra-ui/react"
 import { GetStaticPropsContext } from "next"
 import { useTranslation } from "next-i18next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { useState } from "react"
 
+import Footer from "../components/Footer"
 import Header from "../components/Header"
 
 export default function IndexPage() {
   const { t } = useTranslation("common")
 
+  const [image, setImage] = useState<string | null>(null)
+
   return (
-    <Container maxW="container.md">
+    <Container
+      maxW="container.md"
+      height="100vh"
+      display="flex"
+      flexDirection="column"
+    >
       <Header />
-      <Button leftIcon={<AttachmentIcon />} colorScheme="blue" variant="solid">
-        {t("upload-image")}
-      </Button>
+      <Flex justifyContent="center">
+        <Button
+          leftIcon={<AttachmentIcon />}
+          colorScheme="blue"
+          variant="solid"
+          as="label"
+          cursor="pointer"
+        >
+          {t("upload-image")}
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={(e) => {
+              if (!e.target.files) return
+
+              const src = URL.createObjectURL(e.target.files[0])
+
+              setImage(src)
+            }}
+          />
+        </Button>
+        {image && (
+          <IconButton
+            aria-label="Delete image"
+            icon={<DeleteIcon />}
+            color="red"
+            variant="outline"
+            ml={2}
+            onClick={() => {
+              URL.revokeObjectURL(image)
+
+              setImage(null)
+            }}
+          />
+        )}
+      </Flex>
+      {image && (
+        <Image
+          mt={2}
+          src={image}
+          objectFit="contain"
+          height="auto"
+          minHeight={0}
+          flex={1}
+        />
+      )}
+      <Box mt="auto" mb={2}>
+        <Footer />
+      </Box>
     </Container>
   )
 }
