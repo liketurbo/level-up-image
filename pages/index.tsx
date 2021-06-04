@@ -21,6 +21,8 @@ export default function IndexPage() {
 
   const [image, setImage] = useState<string | null>(null)
 
+  const [loading, setLoading] = useState(false)
+
   return (
     <Container
       maxW="container.md"
@@ -34,6 +36,8 @@ export default function IndexPage() {
         as="form"
         onSubmit={(e) => {
           e.preventDefault()
+
+          setLoading(true)
 
           const formData = new FormData(e.target as HTMLFormElement)
 
@@ -51,6 +55,10 @@ export default function IndexPage() {
               )
 
               socket.send(file)
+            })
+
+            socket.addEventListener("close", () => {
+              setLoading(false)
             })
           })
         }}
@@ -78,7 +86,7 @@ export default function IndexPage() {
             }}
           />
         </Button>
-        {image && (
+        {image && !loading && (
           <IconButton
             aria-label="Delete image"
             icon={<DeleteIcon />}
@@ -97,6 +105,8 @@ export default function IndexPage() {
             colorScheme="green"
             type="submit"
             rightIcon={<SettingsIcon />}
+            loadingText={t("loading")}
+            isLoading={loading}
           >
             {t("enhance-image")}
           </Button>
