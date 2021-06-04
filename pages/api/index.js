@@ -3,6 +3,8 @@ import fetch from "node-fetch"
 import { v4 as uuidv4 } from "uuid"
 import WebSocket from "ws"
 
+import wait from "../../utils/wait"
+
 export default async (req, res) => {
   if (!res.socket.server.ws) {
     const webSocketServer = new WebSocket.Server({ server: res.socket.server })
@@ -94,6 +96,7 @@ export default async (req, res) => {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
+                  "x-shop-id": "17086",
                 },
                 body: JSON.stringify({ url }),
               }
@@ -136,13 +139,64 @@ export default async (req, res) => {
             })
           )
 
-          socket.send(
-            JSON.stringify({
-              id,
-            })
-          )
+          try {
+            while (true) {
+              const response = await fetch(
+                `https://constructor-api.vsemayki.ru/image/status/${id}`
+              )
 
-          socket.terminate()
+              const json = await response.json()
+
+              if (json.status === "DONE") {
+                socket.send(
+                  JSON.stringify({
+                    loading: 1,
+                  })
+                )
+
+                const { width, height } = json.data.meta.image
+
+                socket.send(
+                  JSON.stringify({
+                    url: json.data.url.replace(
+                      /(.*)(\..*)/,
+                      `$1_${width}x${height}$2`
+                    ),
+                  })
+                )
+
+                socket.terminate()
+
+                return
+              }
+
+              if (json.status === "PROCESSING") {
+                await wait(1000)
+              } else {
+                console.error(json)
+
+                socket.send(
+                  JSON.stringify({
+                    error: true,
+                  })
+                )
+
+                socket.terminate()
+
+                return
+              }
+            }
+          } catch (err) {
+            console.error(err)
+
+            socket.send(
+              JSON.stringify({
+                error: true,
+              })
+            )
+
+            socket.terminate()
+          }
         }
       })
     })

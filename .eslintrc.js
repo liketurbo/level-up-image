@@ -37,6 +37,8 @@ module.exports = {
       },
     ],
     "no-console": ["error", { allow: ["warn", "error"] }],
+    "no-await-in-loop": "off",
+    "no-constant-condition": "off",
   },
   settings: {
     "import/resolver": {
