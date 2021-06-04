@@ -29,17 +29,17 @@ export default async (req, res) => {
           file.filename !== null &&
           file.data !== null
         ) {
-          file.filename = file.filename.replace(/.*(?=\..*)/, uuidv4())
-
-          const formData = new FormData()
-
-          const { data: fileData, ...rest } = file
-
-          formData.append("file", fileData, rest)
-
           let url = null
 
           try {
+            file.filename = file.filename.replace(/.*(?=\..*)/, uuidv4())
+
+            const formData = new FormData()
+
+            const { data: fileData, ...rest } = file
+
+            formData.append("file", fileData, rest)
+
             const response = await fetch(
               "https://constructor-api.vsemayki.ru/image/upload",
               {
@@ -51,6 +51,8 @@ export default async (req, res) => {
             const json = await response.json()
 
             if (!json.url) {
+              console.error(json)
+
               socket.send(
                 JSON.stringify({
                   error: true,
@@ -83,9 +85,60 @@ export default async (req, res) => {
             })
           )
 
+          let id = null
+
+          try {
+            const response = await fetch(
+              "https://constructor-api.vsemayki.ru/image/resize",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ url }),
+              }
+            )
+
+            const json = await response.json()
+
+            if (!json.id) {
+              console.error(json)
+
+              socket.send(
+                JSON.stringify({
+                  error: true,
+                })
+              )
+
+              socket.terminate()
+
+              return
+            }
+
+            id = json.id
+          } catch (err) {
+            console.error(err)
+
+            socket.send(
+              JSON.stringify({
+                error: true,
+              })
+            )
+
+            socket.terminate()
+
+            return
+          }
+
           socket.send(
             JSON.stringify({
-              urL: url,
+              loading: 2 / 3,
+            })
+          )
+
+          socket.send(
+            JSON.stringify({
+              id,
             })
           )
 
