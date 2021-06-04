@@ -1,4 +1,4 @@
-import { AttachmentIcon, DeleteIcon } from "@chakra-ui/icons"
+import { AttachmentIcon, DeleteIcon, SettingsIcon } from "@chakra-ui/icons"
 import {
   Box,
   Button,
@@ -93,7 +93,11 @@ export default function IndexPage() {
           />
         )}
         {image && (
-          <Button colorScheme="green" type="submit">
+          <Button
+            colorScheme="green"
+            type="submit"
+            rightIcon={<SettingsIcon />}
+          >
             {t("enhance-image")}
           </Button>
         )}
