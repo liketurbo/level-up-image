@@ -29,40 +29,67 @@ export default function IndexPage() {
     >
       <Header />
       <Flex justifyContent="center">
-        <Button
-          leftIcon={<AttachmentIcon />}
-          colorScheme="blue"
-          variant="solid"
-          as="label"
-          cursor="pointer"
-        >
-          {t("upload-image")}
-          <input
-            type="file"
-            accept="image/*"
-            hidden
-            onChange={(e) => {
-              if (!e.target.files) return
+        {!image && (
+          <Button
+            leftIcon={<AttachmentIcon />}
+            colorScheme="blue"
+            variant="solid"
+            as="label"
+            cursor="pointer"
+          >
+            {t("upload-image")}
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={(e) => {
+                if (!e.target.files) return
 
-              const src = URL.createObjectURL(e.target.files[0])
+                const src = URL.createObjectURL(e.target.files[0])
 
-              setImage(src)
-            }}
-          />
-        </Button>
+                setImage(src)
+              }}
+            />
+          </Button>
+        )}
         {image && (
-          <IconButton
-            aria-label="Delete image"
-            icon={<DeleteIcon />}
-            color="red"
-            variant="outline"
-            ml={2}
-            onClick={() => {
-              URL.revokeObjectURL(image)
+          <>
+            <Button
+              leftIcon={<AttachmentIcon />}
+              colorScheme="blue"
+              variant="solid"
+              as="label"
+              cursor="pointer"
+            >
+              {t("change-image")}
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={(e) => {
+                  if (!e.target.files) return
 
-              setImage(null)
-            }}
-          />
+                  URL.revokeObjectURL(image)
+
+                  const src = URL.createObjectURL(e.target.files[0])
+
+                  setImage(src)
+                }}
+              />
+            </Button>
+            <IconButton
+              aria-label="Delete image"
+              icon={<DeleteIcon />}
+              color="red"
+              variant="outline"
+              ml={2}
+              onClick={() => {
+                URL.revokeObjectURL(image)
+
+                setImage(null)
+              }}
+            />
+          </>
         )}
       </Flex>
       {image && (
