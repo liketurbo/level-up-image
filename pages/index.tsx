@@ -1,4 +1,9 @@
-import { AttachmentIcon, DeleteIcon, SettingsIcon } from "@chakra-ui/icons"
+import {
+  AttachmentIcon,
+  DeleteIcon,
+  DownloadIcon,
+  SettingsIcon,
+} from "@chakra-ui/icons"
 import {
   Box,
   Button,
@@ -12,7 +17,6 @@ import { useTranslation } from "next-i18next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import { useState } from "react"
 
-// import io from "socket.io-client"
 import Footer from "../components/Footer"
 import Header from "../components/Header"
 
@@ -22,6 +26,8 @@ export default function IndexPage() {
   const [image, setImage] = useState<string | null>(null)
 
   const [loading, setLoading] = useState(false)
+
+  const [processedImage, setProcessedImage] = useState<string | null>(null)
 
   return (
     <Container
@@ -55,6 +61,15 @@ export default function IndexPage() {
               )
 
               socket.send(file)
+            })
+
+            socket.addEventListener("message", (event) => {
+              if (typeof event.data !== "string")
+                setProcessedImage(
+                  URL.createObjectURL(
+                    new Blob([event.data], { type: file.type })
+                  )
+                )
             })
 
             socket.addEventListener("close", () => {
@@ -92,15 +107,29 @@ export default function IndexPage() {
             icon={<DeleteIcon />}
             colorScheme="red"
             variant="outline"
+            type="button"
             mx={2}
             onClick={() => {
               URL.revokeObjectURL(image)
 
+              setProcessedImage(null)
               setImage(null)
             }}
           />
         )}
-        {image && (
+        {processedImage && (
+          <Button
+            colorScheme="green"
+            type="button"
+            rightIcon={<DownloadIcon />}
+            as="a"
+            href={processedImage}
+            download
+          >
+            {t("download")}
+          </Button>
+        )}
+        {image && !processedImage && (
           <Button
             colorScheme="green"
             type="submit"
@@ -115,7 +144,7 @@ export default function IndexPage() {
       {image && (
         <Image
           mt={2}
-          src={image}
+          src={processedImage || image}
           objectFit="contain"
           height="auto"
           minHeight={0}

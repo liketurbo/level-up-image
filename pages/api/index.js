@@ -150,20 +150,20 @@ export default async (req, res) => {
               if (json.status === "DONE") {
                 socket.send(
                   JSON.stringify({
-                    loading: 1,
+                    loading: 2.5 / 3,
                   })
                 )
 
                 const { width, height } = json.data.meta.image
 
-                socket.send(
-                  JSON.stringify({
-                    url: json.data.url.replace(
-                      /(.*)(\..*)/,
-                      `$1_${width}x${height}$2`
-                    ),
-                  })
+                const imageUrl = json.data.url.replace(
+                  /(.*)(\..*)/,
+                  `$1_${width}x${height}$2`
                 )
+
+                const image = await fetch(imageUrl).then((r) => r.arrayBuffer())
+
+                socket.send(image)
 
                 socket.terminate()
 
