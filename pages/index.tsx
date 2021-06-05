@@ -45,42 +45,29 @@ export default function IndexPage() {
         <Flex
           justifyContent="center"
           as="form"
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault()
 
             setLoading(true)
 
-            const formData = new FormData(e.target as HTMLFormElement)
+            try {
+              const formData = new FormData(e.target as HTMLFormElement)
 
-            fetch("/api").then(() => {
-              const socket = new WebSocket("ws://localhost:1234/api")
+              const res = await fetch("/api", {
+                method: "POST",
+                body: formData,
+              })
+
+              const arrayBuffer = await res.arrayBuffer()
 
               const file = formData.get("file") as File
 
-              socket.addEventListener("open", async () => {
-                socket.send(
-                  JSON.stringify({
-                    contentType: file.type,
-                    name: file.name,
-                  })
-                )
+              const blob = new Blob([arrayBuffer], { type: file.type })
 
-                socket.send(file)
-              })
-
-              socket.addEventListener("message", (event) => {
-                if (typeof event.data !== "string")
-                  setProcessedImage(
-                    URL.createObjectURL(
-                      new Blob([event.data], { type: file.type })
-                    )
-                  )
-              })
-
-              socket.addEventListener("close", () => {
-                setLoading(false)
-              })
-            })
+              setProcessedImage(URL.createObjectURL(blob))
+            } finally {
+              setLoading(false)
+            }
           }}
         >
           <Button
