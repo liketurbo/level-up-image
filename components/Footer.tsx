@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <Flex justifyContent="center">
       <Text mr={1}>{t("powered-by")}</Text>
-      <Link href="https://letsenhance.io" color="blue">
+      <Link href="https://letsenhance.io" isExternal>
         Letsenhance
       </Link>
     </Flex>
