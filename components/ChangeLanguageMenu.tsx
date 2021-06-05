@@ -3,13 +3,19 @@ import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react"
 import Link from "next/link"
 import { useTranslation } from "next-i18next"
 
+import GlobeIcon from "./GlobeIcon"
+
 export default function ChangeLanguageMenu() {
   const { t } = useTranslation("common")
 
   return (
     <Menu autoSelect={false}>
-      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-        {t("language")}: {t("current-language")}
+      <MenuButton
+        as={Button}
+        leftIcon={<GlobeIcon />}
+        rightIcon={<ChevronDownIcon />}
+      >
+        {t("current-language")}
       </MenuButton>
       <MenuList>
         <Link href="/" locale="en" passHref>
