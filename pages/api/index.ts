@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import fetch from "node-fetch"
 
+import getRandomInt from "../../utils/genRandomInt"
 import wait from "../../utils/wait"
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -57,7 +58,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         return res.send(image)
       }
 
-      if (json.status === "PROCESSING") await wait(1000)
+      if (json.status === "PROCESSING") await wait(getRandomInt(500, 1000))
       else throw new Error(JSON.stringify(json))
     }
   } catch (error) {
