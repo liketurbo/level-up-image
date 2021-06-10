@@ -105,7 +105,11 @@ const fetchMachine = createMachine({
             },
             body: JSON.stringify({ imageId }),
           })
-            .then((res) => res.arrayBuffer())
+            .then((res) => {
+              if (res.status === 504) throw new Error("Time's up")
+
+              return res.arrayBuffer()
+            })
             .then((arrayBuffer) => {
               const decoder = new TextDecoder()
 
