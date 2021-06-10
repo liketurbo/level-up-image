@@ -1,5 +1,4 @@
 {
-  "upload-image": "Upload image",
   "current-language": "English",
   "theme": "Theme",
   "dark-theme": "Dark",
@@ -8,5 +7,7 @@
   "powered-by": "Powered by",
   "enhance-image": "Enhance image",
   "loading": "Processing...",
-  "download": "Download"
+  "download": "Download",
+  "delete-image": "Delete image",
+  "click-or-drag": "Click or drag file to this area to upload"
 }

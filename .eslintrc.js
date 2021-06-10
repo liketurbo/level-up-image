@@ -4,7 +4,13 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: ["plugin:react/recommended", "airbnb", "prettier"],
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "airbnb",
+    "prettier",
+  ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaFeatures: {
@@ -13,7 +19,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  plugins: ["react", "@typescript-eslint", "simple-import-sort"],
+  plugins: ["@typescript-eslint", "react", "simple-import-sort"],
   rules: {
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
@@ -39,6 +45,9 @@ module.exports = {
     "no-console": ["error", { allow: ["warn", "error"] }],
     "no-await-in-loop": "off",
     "no-constant-condition": "off",
+    "no-plusplus": "off",
+    // disable the rule for all files
+    "@typescript-eslint/explicit-module-boundary-types": "off",
   },
   settings: {
     "import/resolver": {

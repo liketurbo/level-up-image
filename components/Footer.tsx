@@ -6,7 +6,7 @@ export default function Footer() {
   const { t } = useTranslation("common")
 
   return (
-    <Flex justifyContent="center">
+    <Flex justifyContent="center" py={2}>
       <Text mr={1}>{t("powered-by")}</Text>
       <Link href="https://letsenhance.io" color="teal.500" isExternal>
         Letsenhance <ExternalLinkIcon ml="2px" />

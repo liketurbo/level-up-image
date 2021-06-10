@@ -1,27 +1,27 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import fetch from "node-fetch"
 
+import FPE from "../../utils/FPE"
 import getRandomInt from "../../utils/genRandomInt"
 import wait from "../../utils/wait"
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    if (typeof req.body.imageId !== "string")
+      throw new Error("Invalid argument (1)")
+
+    const [, id, encodedExtension] = req.body.imageId.match(/(.*)-(.*)/) || []
+
+    if (typeof id !== "string" || typeof encodedExtension !== "string")
+      throw new Error("Invalid argument (2)")
+
+    const cipher = new FPE()
+
+    const extension = cipher.decrypt(encodedExtension)
+
+    const url = `${process.env.IMAGE_URL_PREFIX}/${id}.${extension}`
+
     let response = await fetch(
-      "https://constructor-api.vsemayki.ru/image/upload",
-      {
-        method: "POST",
-        body: req,
-        headers: {
-          "content-type": req.headers["content-type"] as string,
-        },
-      }
-    )
-
-    let json = await response.json()
-
-    if (!json.url) throw new Error(JSON.stringify(json))
-
-    response = await fetch(
       "https://constructor-api.vsemayki.ru/image/resize",
 
       {
@@ -30,11 +30,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           "content-type": "application/json",
           "x-shop-id": "17086",
         },
-        body: JSON.stringify({ url: json.url }),
+        body: JSON.stringify({ url }),
       }
     )
 
-    json = await response.json()
+    let json = await response.json()
 
     if (!json.id) throw new Error(JSON.stringify(json))
 
@@ -66,10 +66,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.json({ error: true })
   }
-}
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
 }
