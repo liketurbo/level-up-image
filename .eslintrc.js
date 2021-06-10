@@ -6,9 +6,9 @@ module.exports = {
   },
   extends: [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "airbnb",
+    "plugin:@typescript-eslint/recommended",
     "prettier",
   ],
   parser: "@typescript-eslint/parser",
@@ -48,6 +48,11 @@ module.exports = {
     "no-plusplus": "off",
     // disable the rule for all files
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "lines-between-class-members": [
+      "error",
+      "always",
+      { exceptAfterSingleLine: true },
+    ],
   },
   settings: {
     "import/resolver": {

@@ -2,6 +2,7 @@ import fpe from "node-fpe"
 
 export default class FPE {
   private domain: string[]
+  private cipher: ReturnType<typeof fpe>
 
   constructor() {
     this.domain = []
