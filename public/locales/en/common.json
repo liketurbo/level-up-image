@@ -3,13 +3,14 @@
   "theme": "Theme",
   "dark-theme": "Dark",
   "light-theme": "Light",
-  "title": "Level Up Image - Automatically enhance photo detail online",
+  "title": "Level Up Image",
   "powered-by": "Powered by",
   "enhance-image": "Enhance image",
   "loading": "Processing...",
   "download": "Download",
   "delete-image": "Delete image",
   "click-or-drag": "Click or drag file to this area to upload",
-  "description": "Automatically enhance your photo online by sharpening, detailing and saturating colors",
-  "keywords": "enrichment, photo, automatic, improvement, details, detailing, online"
+  "headTitle": "Level Up Image - Automatically enhance photo detail online",
+  "headDescription": "Automatically enhance your photo online by sharpening, detailing and saturating colors",
+  "headKeywords": "enrichment, photo, automatic, improvement, details, detailing, online"
 }
