@@ -296,6 +296,8 @@ export default function IndexPage() {
     <>
       <Head>
         <title>{t("title")}</title>
+        <meta name="description" content={t("description")} />
+        <meta name="keywords" content={t("keywords")} />
       </Head>
       <Container
         maxW="container.md"
