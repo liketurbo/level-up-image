@@ -157,29 +157,6 @@ export default function IndexPage() {
     send("UPLOAD", {
       file: acceptedFiles[0],
     })
-
-    // console.log({ acceptedFiles })
-
-    // setLoading(true)
-
-    // try {
-    //   const formData = new FormData(e.target as HTMLFormElement)
-
-    //   const res = await fetch("/api", {
-    //     method: "POST",
-    //     body: formData,
-    //   })
-
-    //   const arrayBuffer = await res.arrayBuffer()
-
-    //   const file = formData.get("file") as File
-
-    //   const blob = new Blob([arrayBuffer], { type: file.type })
-
-    //   setProcessedImage(URL.createObjectURL(blob))
-    // } finally {
-    //   setLoading(false)
-    // }
   }, [])
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop })
